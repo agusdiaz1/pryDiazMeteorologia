@@ -108,10 +108,10 @@ namespace pryDiazMeteorologia
             string sql = @"SELECT T.idLocalidad, T.TempMin, T.TempMax 
                            FROM Temperaturas T
                            INNER JOIN Localidad L ON L.Id = T.idLocalidad
-                           WHERE L.idProvincia = @prov AND T.FechaHora = @FechaHora";
+                           WHERE L.idProvincia = @idProvincia AND T.FechaHora = @FechaHora";
 
             DataTable tabla = EjecutarConsulta(sql,
-                new OleDbParameter("@prov", idProvincia),
+                new OleDbParameter("@idProvincia", idProvincia),
                 new OleDbParameter("@FechaHora", fecha));
 
             foreach (DataRow fila in tabla.Rows)
