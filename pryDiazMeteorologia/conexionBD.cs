@@ -32,6 +32,10 @@ namespace pryDiazMeteorologia
                 OleDbDataAdapter adaptador = new OleDbDataAdapter(comando);
                 adaptador.Fill(tabla);
             }
+            catch (Exception ex) 
+            {
+                System.Windows.Forms.MessageBox.Show("Error en la consulta" + ex.Message);
+            }
             finally
             {
                 conexion.Close();
@@ -81,10 +85,10 @@ namespace pryDiazMeteorologia
         //Temperaturas por localidad y fecha
         public Temperatura ObtenerTemperaturaLocalidad(int idLocalidad, DateTime fecha)
         {
-            string sql = "SELECT TempMin, TempMax FROM Temperaturas WHERE idLocalidad = @idLocalidad AND FechaHora = @FechaHora";
+            string sql = "SELECT TempMin, TempMax FROM Temperaturas WHERE idLocalidad = ? AND Fecha = ?";
             DataTable tabla = EjecutarConsulta(sql,
                 new OleDbParameter("@idLocalidad", idLocalidad),
-                new OleDbParameter("@FechaHora", fecha));
+                new OleDbParameter("@Fecha", fecha));
 
             if (tabla.Rows.Count > 0)
             {
@@ -108,11 +112,11 @@ namespace pryDiazMeteorologia
             string sql = @"SELECT T.idLocalidad, T.TempMin, T.TempMax 
                            FROM Temperaturas T
                            INNER JOIN Localidad L ON L.Id = T.idLocalidad
-                           WHERE L.idProvincia = @idProvincia AND T.FechaHora = @FechaHora";
+                           WHERE L.idProvincia = ? AND T.Fecha = ?";
 
             DataTable tabla = EjecutarConsulta(sql,
                 new OleDbParameter("@idProvincia", idProvincia),
-                new OleDbParameter("@FechaHora", fecha));
+                new OleDbParameter("@Fecha", fecha));
 
             foreach (DataRow fila in tabla.Rows)
             {
